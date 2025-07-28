@@ -32,9 +32,13 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import { StatusBar,Style } from '@capacitor/status-bar';
 
 setupIonicReact();
-
+StatusBar.setOverlaysWebView({ overlay: false });
+StatusBar.setStyle({ style: Style.Dark });
+StatusBar.setBackgroundColor({ color: '#fffff' });
+StatusBar.show();
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>

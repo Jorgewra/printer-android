@@ -8,6 +8,7 @@ import {
   IonLabel,
   IonInput,
   IonButton,
+  IonInputPasswordToggle,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
 import "./Home.css";
@@ -29,12 +30,10 @@ const Home: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [account, setAccount] = useState<any>();
    const printerService = PrinterBackgroundService.getInstance();
-  const [serviceRunning, setServiceRunning] = useState(false);
 
   useEffect(() => {
     getAccount();
     initializeBluetooth();
-    setServiceRunning(printerService.isServiceRunning());
   }, []);
   useEffect(() => {
     if (account) {
@@ -49,7 +48,6 @@ const Home: React.FC = () => {
         autoReconnect: true,
         reconnectInterval: 30000
       });
-      setServiceRunning(true);
       console.log('Serviço iniciado com sucesso');
     } catch (error) {
       console.error('Erro ao iniciar serviço:', error);
@@ -59,7 +57,6 @@ const Home: React.FC = () => {
   const stopBackgroundService = async () => {
     try {
       await printerService.stopService();
-      setServiceRunning(false);
       console.log('Serviço parado com sucesso');
     } catch (error) {
       console.error('Erro ao parar serviço:', error);
@@ -101,7 +98,7 @@ const Home: React.FC = () => {
       });
 
       if (device) {
-        setPrinterName((device.name || device.deviceId) + " Conectada!");
+        setPrinterName((device.name || device.deviceId) + " Pronta!");
         setIdPrint(device.deviceId);
       }
     } catch (error) {
@@ -219,7 +216,7 @@ const Home: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle style={{ textAlign: "center" }}>
+          <IonTitle style={{ textAlign: "center" }} color={"primary"}>
             Xeggo Printers Connect
           </IonTitle>
         </IonToolbar>
@@ -281,11 +278,14 @@ const Home: React.FC = () => {
             <IonItem>
               <IonLabel position="floating">Senha</IonLabel>
               <IonInput
-                type="password"
+                type={"password"}
                 className="custom-input"
                 value={password}
-                onIonChange={(e) => setPassword(e.detail.value!)}
-              />
+              >
+                 <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
+              </IonInput>
+              
+
             </IonItem>
 
             <IonButton
@@ -310,10 +310,10 @@ const Home: React.FC = () => {
               onClick={auth}
             >
               {isConnect
-                ? "Aguardando Impressões....(Click e Cancela)"
+                ? "Click e Cancela"
                 : "Conectar e Imprimir"}
             </IonButton>
-            {serviceRunning && ("Aguardando Impressões!")}
+            {isConnect && ("Aguardando Impressões....")}
           </div>
         </div>
       </IonContent>

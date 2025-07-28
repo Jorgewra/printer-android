@@ -1,0 +1,7 @@
+{
+  "name": "zacksys-print",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
